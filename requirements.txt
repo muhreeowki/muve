@@ -1,0 +1,10 @@
+Django
+django-filter
+django-extensions
+djangorestframework
+djangorestframework-jsonapi
+requests
+google-api-python-client
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
