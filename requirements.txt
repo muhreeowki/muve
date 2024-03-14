@@ -1,4 +1,5 @@
 Django
+python-dotenv
 django-filter
 django-extensions
 djangorestframework
