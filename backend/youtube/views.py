@@ -61,6 +61,7 @@ class GetPlaylist(APIView):
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+# CONVERTS A SPOTIFY PLAYLIST INTO A YOUTUBE PLAYLIST
 @authentication_classes([TokenAuthentication, SessionAuthentication])
 @permission_classes([IsAuthenticated])
 class ConvertSPPlaylist(APIView):

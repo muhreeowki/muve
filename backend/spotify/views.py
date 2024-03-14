@@ -109,6 +109,7 @@ class GetPlaylistItems(APIView):
         return Response(spotify_request(request.data["tracks_url"], user))
 
 
+# CONVERTING A YOUTUBE PLAYLIST TO A SPOTIFY PLAYLIST
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 class ConvertToSpotify(APIView):
@@ -120,15 +121,21 @@ class ConvertToSpotify(APIView):
 
         # Loop through the list of yt songs
         refresh_token(user)
-        print("\n\n\nSearching For Songs....\n\n")
+        print("\n\n\nSEARCHING SPOTIFY FOR SONGS....\n\n")
         for item in yt_playlist:
             # Search spotify for each song
             clean_string = filter(
-                lambda x: x.isalnum() or x.isspace() or x in ["(", ")"],
-                item["snippet"]["title"],
+                lambda x: x.isalnum() or x.isspace() or x in ["(", ")", "[", "]"],
+                "{} {}".format(
+                    item["snippet"]["title"], item["snippet"]["videoOwnerChannelTitle"]
+                ),
             )
-            query = re.sub("[\(\[].*?[\)\]]", "", "".join(clean_string))
-            print("NEW QUERRY: ", query)
+
+            # Removing anything that is inside of parenthesis or brackets
+            query = " ".join(
+                re.sub("[\(\[].*?[\)\]]", "", "".join(clean_string)).lower().split()
+            )
+
             url = "https://api.spotify.com/v1/search?" + urllib.parse.urlencode(
                 {
                     "q": query,
@@ -137,27 +144,44 @@ class ConvertToSpotify(APIView):
                 }
             )
             response = spotify_request(url, user)  # Add the song uri to the uri list
-            query = item["snippet"]["title"].lower()
             if len(response["tracks"]["items"]) >= 1:
-                print("SEARCHING FOR {}:".format(item["snippet"]["title"]))
+                print(
+                    "\tSEARCHING FOR: {} BY {}:".format(
+                        item["snippet"]["title"],
+                        item["snippet"]["videoOwnerChannelTitle"],
+                    )
+                )
                 for track in response["tracks"]["items"]:
-                    print(
-                        "Found: {} by {}".format(
-                            track["name"], track["artists"][0]["name"]
-                        )
+                    raw_artist = filter(
+                        lambda x: x.isalnum() or x.isspace() or x in ["(", ")"],
+                        track["artists"][0]["name"].lower(),
+                    )
+                    artist = " ".join(
+                        re.sub("\[\([].*?[\)\]]", "", "".join(raw_artist))
+                        .lower()
+                        .split()
                     )
                     if (
-                        track["name"].lower() in query
-                        and track["artists"][0]["name"].lower() in query
+                        artist in item["snippet"]["videoOwnerChannelTitle"].lower()
+                        or artist in query
+                        or item["snippet"]["videoOwnerChannelTitle"].lower() in artist
+                        or "".join(
+                            item["snippet"]["videoOwnerChannelTitle"].lower().split()
+                        )
+                        in "".join(artist.split())
+                        or "".join(artist.split())
+                        in "".join(
+                            item["snippet"]["videoOwnerChannelTitle"].lower().split()
+                        )
                     ):
+                        print("\t\tFound!!!: {} by {}".format(track["name"], artist))
                         spotify_song_uris.append(track["uri"])
                         break
             else:
                 songs_not_found.append(item["snippet"]["title"])
-        print("\n\nDONE COLLECTING SONGS!\n")
 
         # Create a new playlist
-        print("\n\n\nCREATING NEW PLAYLIST....\n\n")
+        print("CREATING NEW PLAYLIST....")
         spotify_user_id = get_details(request.user)["id"]
         url = f"https://api.spotify.com/v1/users/{spotify_user_id}/playlists"
         new_playlist = requests.post(
@@ -173,11 +197,10 @@ class ConvertToSpotify(APIView):
             },
             json=True,
         ).json()
-        print("\n\nDONE CREATING PLAYLIST!\n")
         playlist_id = new_playlist["id"]
 
         # Add The songs to the playlist
-        print("\n\n\nADDING SONGS TO NEW PLAYLIST....\n\n")
+        print("ADDING SONGS TO NEW PLAYLIST....")
         url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
         response = requests.post(
             url=url,
@@ -187,6 +210,5 @@ class ConvertToSpotify(APIView):
             },
             json=True,
         ).json()
-        print("\n\n\nDONE ADDING SONGS TO NEW PLAYLIST!\n\n")
-        print("\n\n\nDONE CONVERTING TO SPOTIFY!\n\n")
+        print("DONE CONVERTING TO SPOTIFY!")
         return Response({"message": "success", "playlist": new_playlist})
