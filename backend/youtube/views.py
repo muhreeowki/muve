@@ -1,14 +1,12 @@
-from rest_framework.response import Response
-from rest_framework.views import APIView, status
-from rest_framework.authentication import TokenAuthentication, SessionAuthentication
-from rest_framework.decorators import authentication_classes, permission_classes
-from rest_framework.permissions import IsAuthenticated
-from django.shortcuts import redirect
-from .utils import getUserCreds
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-import os
-import json
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView, status
+
+from .utils import getUserCreds
 
 
 @authentication_classes([TokenAuthentication, SessionAuthentication])
@@ -64,7 +62,7 @@ class GetPlaylist(APIView):
 # CONVERTS A SPOTIFY PLAYLIST INTO A YOUTUBE PLAYLIST
 @authentication_classes([TokenAuthentication, SessionAuthentication])
 @permission_classes([IsAuthenticated])
-class ConvertSPPlaylist(APIView):
+class ConvertSpotifyToYoutube(APIView):
     def post(self, request, format=None):
         sp_playlist = request.data["sp_playlist"]
         yt_items = []
@@ -72,7 +70,7 @@ class ConvertSPPlaylist(APIView):
         try:
             # Get playlist Items for the selected playlist
             youtube = build("youtube", "v3", credentials=creds)
-            print("\n\n\nGETTING PLAYLIST ITEMS FOR SELECTED PLAYLIST.... \n\n")
+            print("GETTING PLAYLIST ITEMS FOR SELECTED PLAYLIST....")
             # Find each song on youtube
             for item in sp_playlist:
                 video = (
@@ -103,21 +101,16 @@ class ConvertSPPlaylist(APIView):
             )
 
             # Add The songs to the playlist
-            response = {}
             for video in yt_items:
-                response = (
-                    youtube.playlistItems()
-                    .insert(
-                        part="snippet",
-                        body={
-                            "snippet": {
-                                "playlistId": new_playlist["id"],
-                                "resourceId": video["id"],
-                            }
-                        },
-                    )
-                    .execute()
-                )
+                youtube.playlistItems().insert(
+                    part="snippet",
+                    body={
+                        "snippet": {
+                            "playlistId": new_playlist["id"],
+                            "resourceId": video["id"],
+                        }
+                    },
+                ).execute()
             return Response(
                 {
                     "message": "success",
@@ -128,7 +121,7 @@ class ConvertSPPlaylist(APIView):
                 status=status.HTTP_200_OK,
             )
         except HttpError as err:
-            print("\n\n\nFAILED TO GET PLAYLIST ITEMS!\n\n", err)
+            print("FAILED TO GET PLAYLIST ITEMS!", err)
             return Response(
                 {"message": "error"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,

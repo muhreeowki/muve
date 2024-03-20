@@ -4,7 +4,7 @@ from .views import (
     GetPlaylists,
     SpotifyLogin,
     SpotifyCallback,
-    ConvertToSpotify,
+    ConvertYoutubeToSpotify,
 )
 
 urlpatterns = [
@@ -12,5 +12,5 @@ urlpatterns = [
     path("callback/", SpotifyCallback.as_view()),
     path("get-playlists/", GetPlaylists.as_view()),
     path("get-playlist-items/", GetPlaylistItems.as_view()),
-    path("convert/", ConvertToSpotify.as_view()),
+    path("convert/", ConvertYoutubeToSpotify.as_view()),
 ]

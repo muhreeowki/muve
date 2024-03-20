@@ -1,22 +1,21 @@
-from django.http.response import ResponseHeaders
-from rest_framework.response import Response
-from rest_framework.views import APIView, status  # , status
-from rest_framework.authentication import TokenAuthentication, SessionAuthentication
-from rest_framework.authtoken.models import Token
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import permission_classes, authentication_classes
-from dotenv import load_dotenv
-from django.shortcuts import get_object_or_404, redirect
-from users.models import CustomUser
-from users.authentication import QueryParameterTokenAuthentication
-from .utils import refresh_token, get_details, spotify_request
-import requests
-import urllib.parse
-import os
-import time
 import base64
 import json
+import os
 import re
+import urllib.parse
+
+import requests
+from django.shortcuts import get_object_or_404, redirect
+from dotenv import load_dotenv
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView, status  # , status
+from users.authentication import QueryParameterTokenAuthentication
+from users.models import CustomUser
+
+from .utils import get_details, refresh_token, spotify_request
 
 load_dotenv()
 
@@ -80,7 +79,7 @@ class SpotifyCallback(APIView):
                 user.spotify_token = data["access_token"]
                 user.spotify_refresh = data["refresh_token"]
                 user.save()
-                return redirect("http://localhost:5173/dashboard")
+                return redirect("http://localhost:3001/playlists")
             except Exception as error:
                 print(error)
                 return Response(
@@ -112,7 +111,7 @@ class GetPlaylistItems(APIView):
 # CONVERTING A YOUTUBE PLAYLIST TO A SPOTIFY PLAYLIST
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-class ConvertToSpotify(APIView):
+class ConvertYoutubeToSpotify(APIView):
     def post(self, request, format=None):
         spotify_song_uris = []
         songs_not_found = []
