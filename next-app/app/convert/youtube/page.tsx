@@ -49,7 +49,7 @@ const YoutubePlaylist = () => {
           headers: {
             Authorization: `Token ${user.token}`,
           },
-        },
+        }
       )
       .then((response) => {
         console.log(response);
@@ -73,7 +73,7 @@ const YoutubePlaylist = () => {
           headers: {
             Authorization: `Token ${user.token}`,
           },
-        },
+        }
       )
       .then((response) => {
         console.log(response);
@@ -86,11 +86,11 @@ const YoutubePlaylist = () => {
     const keys = Object.keys(playlistItems);
     if (allSelected) {
       setChecked(playlistItems.map((item) => 0));
-      setCheckedPlaylistItems([...playlistItems]);
+      setCheckedPlaylistItems([]);
       setAllSelected(false);
     } else {
       setChecked(playlistItems.map((item) => 1));
-      setCheckedPlaylistItems([]);
+      setCheckedPlaylistItems([...playlistItems]);
       setAllSelected(true);
     }
   };
@@ -104,13 +104,13 @@ const YoutubePlaylist = () => {
     }
     setCheckedPlaylistItems(
       newChecked
-        .map((value) => {
-          if (value === 1) return playlistItems[String(index)];
+        .map((value: number, i: number) => {
+          if (value === 1) return playlistItems[i];
         })
-        .filter((value) => value !== undefined),
+        .filter((value: number) => value !== undefined)
     );
     setChecked(newChecked);
-    console.log(newChecked);
+    console.log(checkedPlaylistItems);
   };
 
   useEffect(() => {
@@ -127,16 +127,16 @@ const YoutubePlaylist = () => {
 
   return converted ? (
     <section className="w-full h-screen px-5 py-5 flex flex-col items-center justify-around">
-      <Card>
+      <Card className="dark">
         <CardHeader>
-          <CardTitle>Successfully Converted</CardTitle>
+          <CardTitle>Successfully MUVED</CardTitle>
           <CardDescription>
             Click the button below to go to your new playlist.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex justify-between items-center">
           <Link href={"/playlists"}>
-            <Button variant={"outline"}>Back</Button>
+            <Button variant={"destructive"}>Back</Button>
           </Link>
           <Link href={playlistUrl} target="_blank">
             <Button>Go to Playlist</Button>
@@ -150,7 +150,7 @@ const YoutubePlaylist = () => {
         "Loading..."
       ) : (
         <div className="flex w-1/2 min-w-fit max-w-lg flex-col items-center justify-center h-5/6 text-center">
-          <Card>
+          <Card className="dark">
             <CardHeader>
               <CardTitle>{playlist.playlistTitle || "Select Songs"}</CardTitle>
               <CardDescription>

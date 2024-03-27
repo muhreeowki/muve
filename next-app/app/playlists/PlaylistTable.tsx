@@ -49,7 +49,7 @@ const PlaylistTable = (props: {
   return (
     <section className="w-full h-screen px-5 py-5 flex flex-col items-center justify-around">
       <div className="flex w-1/2 min-w-fit max-w-lg flex-col items-center justify-center h-5/6 text-center">
-        <Card>
+        <Card className="dark">
           <CardHeader>
             <CardTitle>Select a {props.platform} Playlist</CardTitle>
             <CardDescription>
@@ -57,7 +57,7 @@ const PlaylistTable = (props: {
             </CardDescription>
           </CardHeader>
           <CardContent className="relative h-[400px] overflow-y-auto">
-            <Table className="border rounded-lg ">
+            <Table className="border rounded-lg">
               <TableHeader className="bg-secondary">
                 <TableRow>
                   <TableHead className="w-[100px]">Thumbnail</TableHead>
@@ -80,7 +80,7 @@ const PlaylistTable = (props: {
                       <img
                         alt={item.title}
                         src={item.image}
-                        className="w-full aspect-auto rounded-md"
+                        className="w-full aspect-square rounded-md"
                       />
                     </TableCell>
                     <TableCell className="text-left">{item.title}</TableCell>
@@ -95,7 +95,7 @@ const PlaylistTable = (props: {
           <CardFooter>
             <div className="w-full flex flex-row items-end justify-between my-5">
               <Link href={"/dashboard"}>
-                <Button variant={"outline"}>Back</Button>
+                <Button variant={"destructive"}>Back</Button>
               </Link>
             </div>
           </CardFooter>

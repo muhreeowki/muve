@@ -35,10 +35,10 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <main className="w-full h-screen p-5 flex-col">
+    <main className="w-full h-screen p-5 flex flex-col items-center">
       <Navbar />
-      <div className="grid w-full grid-cols-5 gap-5 p-5 max-w-screen-lg">
-        <Card className="col-span-5 p-5">
+      <div className="flex w-full h-full p-5 max-w-screen-lg justify-center items-center">
+        <Card className="w-full max-w-screen-sm p-5 dark">
           <CardHeader>
             <CardTitle>Convert a Playlist</CardTitle>
             <CardDescription>
@@ -56,8 +56,8 @@ const Dashboard = () => {
               }
             >
               <CardContent>
-                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-                  {"Spotify -> Youtube"}
+                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-center">
+                  Spotify <br/>to<br/> Youtube
                 </h3>
               </CardContent>
             </Card>
@@ -71,8 +71,8 @@ const Dashboard = () => {
               }
             >
               <CardContent>
-                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-                  {"Youtube -> Spotify"}
+                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-center">
+                  Youtube <br/>to<br/> Spotify
                 </h3>
               </CardContent>
             </Card>

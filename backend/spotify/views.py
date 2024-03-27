@@ -79,7 +79,7 @@ class SpotifyCallback(APIView):
                 user.spotify_token = data["access_token"]
                 user.spotify_refresh = data["refresh_token"]
                 user.save()
-                return redirect("http://localhost:3001/playlists")
+                return redirect("http://localhost:3000/playlists")
             except Exception as error:
                 print(error)
                 return Response(
@@ -161,13 +161,12 @@ class ConvertYoutubeToSpotify(APIView):
                         .split()
                     )
                     if (
-                        artist in item["snippet"]["videoOwnerChannelTitle"].lower()
+                        artist in item["snippet"]["videoOwnerChannelTitle"].replace(" ", "").lower()
                         or artist in query
-                        or item["snippet"]["videoOwnerChannelTitle"].lower() in artist
+                        or item["snippet"]["videoOwnerChannelTitle"].replace(" ", "").lower() in artist
                         or "".join(
                             item["snippet"]["videoOwnerChannelTitle"].lower().split()
-                        )
-                        in "".join(artist.split())
+                        ) in "".join(artist.split())
                         or "".join(artist.split())
                         in "".join(
                             item["snippet"]["videoOwnerChannelTitle"].lower().split()

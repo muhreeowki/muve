@@ -31,7 +31,7 @@ const Login = () => {
     await axios
       .post(
         `http://127.0.0.1:8000/${signUp ? "sign-up" : "login"}/`,
-        requestData,
+        requestData
       )
       .then((response) => {
         // Store the token in a cookie
@@ -50,7 +50,7 @@ const Login = () => {
   }, [user]);
 
   return (
-    <main className="w-full p-5 h-screen">
+    <main className="w-full p-5 h-screen ">
       <Navbar />
       <div className="w-full flex flex-col justify-items-center justify-center">
         {/* Hero */}
