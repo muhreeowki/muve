@@ -6,6 +6,7 @@ Muve is a web application that revolutionizes the way you manage your music play
 
 Developed by [Muriuki Muchiri], a passionate music enthusiast and Software Engineer, Muve aims to bridge the gap between popular streaming services, making it easier than ever to enjoy your favorite tunes without being limited by platform restrictions.
 
+Check it out: [http://muve.muriuki.tech]
 Read more about the project: [https://medium.com/@othermuriuki/introducing-muve-the-playlist-converter-for-music-lovers-18360087d6b2]  
 Connect with the author: [https://www.linkedin.com/in/muriukimuchiri/]
 
@@ -13,9 +14,9 @@ Connect with the author: [https://www.linkedin.com/in/muriukimuchiri/]
 
 Using Muve is a breeze. Simply follow these steps:
 
-1. **Select Source Platform**: Choose the streaming service where your playlist currently resides (YouTube or Spotify).
-2. **Provide Playlist Link or ID**: Enter the URL or ID of the playlist you want to convert.
-3. **Select Target Platform**: Specify the platform you want to convert your playlist to (YouTube or Spotify).
+1. **Select Source Platform and Target Platform**: Choose the streaming service you want to convert from and convert to.
+2. **Select Playlist**: Choose the playlist that you would like to convert.
+3. **Select the songs you want to convert**: You can choose specific songs to convert, or you can convert the entire playlist.
 4. **Convert**: Click the "Convert" button, and Muve will work its magic, seamlessly transferring your playlist to the desired platform.
 5. **Enjoy**: Once the conversion is complete, you'll receive a link to your newly converted playlist on the target platform. Sit back, hit play, and immerse yourself in your favorite tunes!
 
