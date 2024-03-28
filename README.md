@@ -7,7 +7,6 @@ Muve is a web application that revolutionizes the way you manage your music play
 Developed by [Muriuki Muchiri], a passionate music enthusiast and Software Engineer, Muve aims to bridge the gap between popular streaming services, making it easier than ever to enjoy your favorite tunes without being limited by platform restrictions.
 
 Check it out: [http://muve.muriuki.tech]
-
 Read more about the project: [https://medium.com/@othermuriuki/introducing-muve-the-playlist-converter-for-music-lovers-18360087d6b2]  
 Connect with the author: [https://www.linkedin.com/in/muriukimuchiri/]
 
