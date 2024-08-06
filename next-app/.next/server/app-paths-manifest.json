@@ -1,6 +1,0 @@
-{
-  "/dashboard/page": "app/dashboard/page.js",
-  "/playlists/page": "app/playlists/page.js",
-  "/convert/spotify/page": "app/convert/spotify/page.js",
-  "/convert/youtube/page": "app/convert/youtube/page.js"
-}
