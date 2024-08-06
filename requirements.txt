@@ -2,6 +2,7 @@ Django
 python-dotenv
 django-filter
 django-extensions
+django-cors-headers
 djangorestframework
 djangorestframework-jsonapi
 requests
