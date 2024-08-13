@@ -12,7 +12,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from corsheaders.defaults import default_headers
 from pathlib import Path
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,12 +24,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-ktfi!52&(s=gb3!j*m4cebyaw7os@)s$^prriicv^yl0f(94^n"
+SECRET_KEY = os.getenv(
+    "DJANGO_SECRET",
+    "django-insecure-ktfi!52&(s=gb3!j*m4cebyaw7os@)s$^prriicv^yl0f(94^n",
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "muve.onrender.com"]
 
 
 # Application definition

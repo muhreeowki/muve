@@ -161,12 +161,19 @@ class ConvertYoutubeToSpotify(APIView):
                         .split()
                     )
                     if (
-                        artist in item["snippet"]["videoOwnerChannelTitle"].replace(" ", "").lower()
+                        artist
+                        in item["snippet"]["videoOwnerChannelTitle"]
+                        .replace(" ", "")
+                        .lower()
                         or artist in query
-                        or item["snippet"]["videoOwnerChannelTitle"].replace(" ", "").lower() in artist
+                        or item["snippet"]["videoOwnerChannelTitle"]
+                        .replace(" ", "")
+                        .lower()
+                        in artist
                         or "".join(
                             item["snippet"]["videoOwnerChannelTitle"].lower().split()
-                        ) in "".join(artist.split())
+                        )
+                        in "".join(artist.split())
                         or "".join(artist.split())
                         in "".join(
                             item["snippet"]["videoOwnerChannelTitle"].lower().split()

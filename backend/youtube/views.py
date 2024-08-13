@@ -66,6 +66,7 @@ class ConvertSpotifyToYoutube(APIView):
     def post(self, request, format=None):
         sp_playlist = request.data["sp_playlist"]
         yt_items = []
+        failed_songs = []
         creds = getUserCreds(request.user)
         try:
             # Get playlist Items for the selected playlist
@@ -85,7 +86,14 @@ class ConvertSpotifyToYoutube(APIView):
                 )
                 yt_items.append(video["items"][0])
                 print("FOUND: {}".format(video["items"][0]["snippet"]["title"]))
+        except HttpError as err:
+            print("failed to search songs!", err)
+            return Response(
+                {"message": "error"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
 
+        try:
             # Create a playlist
             new_playlist = (
                 youtube.playlists()
@@ -99,30 +107,38 @@ class ConvertSpotifyToYoutube(APIView):
                 "CREATE NEW PLAYLIST: {} \n".format(new_playlist["snippet"]["title"]),
                 new_playlist,
             )
+        except HttpError as err:
+            print("failed to search songs!", err)
+            return Response(
+                {"message": "error"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
 
-            # Add The songs to the playlist
-            for video in yt_items:
+        # Add The songs to the playlist
+        for video in yt_items:
+            try:
                 youtube.playlistItems().insert(
                     part="snippet",
                     body={
                         "snippet": {
                             "playlistId": new_playlist["id"],
-                            "resourceId": video["id"],
+                            "resourceId": {
+                                "kind": video["id"]["kind"],
+                                "videoId": video["id"]["videoId"],
+                            },
                         }
                     },
                 ).execute()
-            return Response(
-                {
-                    "message": "success",
-                    "url": "https://www.youtube.com/playlist?list={}".format(
-                        new_playlist["id"]
-                    ),
-                },
-                status=status.HTTP_200_OK,
-            )
-        except HttpError as err:
-            print("FAILED TO GET PLAYLIST ITEMS!", err)
-            return Response(
-                {"message": "error"},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            )
+            except Exception as e:
+                failed_songs.append(video["snippet"]["title"])
+                continue
+        return Response(
+            {
+                "message": "success",
+                "url": "https://www.youtube.com/playlist?list={}".format(
+                    new_playlist["id"]
+                ),
+                "failed_songs": {},
+            },
+            status=status.HTTP_200_OK,
+        )
