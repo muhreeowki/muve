@@ -34,12 +34,12 @@ export default function Home() {
                 {/* Buttons */}
                 <div className="mt-8 gap-3 flex justify-center">
                   <Link href="/login">
-                    <Button className="dark" size={"lg"}>
+                    <Button className="" size={"lg"}>
                       Sign Up
                     </Button>
                   </Link>
                   <Link href="/login">
-                    <Button className="dark" size={"lg"} variant={"outline"}>
+                    <Button className="" size={"lg"} variant={"outline"}>
                       Login
                     </Button>
                   </Link>

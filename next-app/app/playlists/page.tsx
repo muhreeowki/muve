@@ -1,9 +1,10 @@
 "use client";
+
 import PlaylistTable from "./PlaylistTable";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { setPlaylist } from "../redux/slices.js";
+import { setPlaylist } from "@/redux/slices.js";
 import { useRouter } from "next/navigation.js";
 
 const Playlists = () => {
@@ -25,7 +26,7 @@ const Playlists = () => {
 
   const GetYTPlaylists = () => {
     axios
-      .get("http://127.0.0.1:8000/youtube/playlists/", {
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URI}/youtube/playlists/`, {
         headers: {
           Authorization: `Token ${user.token}`,
         },
@@ -53,7 +54,7 @@ const Playlists = () => {
 
   const GetSPPlaylists = () => {
     axios
-      .get("http://127.0.0.1:8000/spotify/get-playlists/", {
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_URI}/spotify/get-playlists/`, {
         headers: {
           Authorization: `Token ${user.token}`,
         },
@@ -91,7 +92,7 @@ const Playlists = () => {
   }, []);
 
   const handleRender = () => {
-    console.log(convertFrom);
+    console.log("CONVERT FROM: ", convertFrom);
     if (convertFrom == "Youtube") {
       return loading ? (
         <div className="w-full h-screen flex justify-center items-center">
@@ -108,6 +109,10 @@ const Playlists = () => {
       ) : (
         <PlaylistTable playlists={playlists} platform="Spotify" />
       );
+    } else {
+      <div className="w-full h-screen flex justify-center items-center">
+        Something went wrong
+      </div>;
     }
   };
 

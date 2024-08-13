@@ -9,7 +9,7 @@ import gradient from "../../public/abstract-gradient-neon-lights.jpg";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-import { login } from "../redux/slices";
+import { login } from "@/redux/slices";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -30,8 +30,8 @@ const Login = () => {
     // set/unset auth_token in axios
     await axios
       .post(
-        `http://127.0.0.1:8000/${signUp ? "sign-up" : "login"}/`,
-        requestData
+        `${process.env.NEXT_PUBLIC_BACKEND_URI}/${signUp ? "sign-up" : "login"}/`,
+        requestData,
       )
       .then((response) => {
         // Store the token in a cookie

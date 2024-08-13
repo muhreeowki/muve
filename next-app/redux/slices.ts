@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loadState } from "./localStorage";
+import { loadState } from "@/redux/localStorage";
 
 const persistedState = loadState();
 

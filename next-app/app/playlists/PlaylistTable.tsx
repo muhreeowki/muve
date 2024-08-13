@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useDispatch } from "react-redux";
-import { setPlaylist } from "../redux/slices";
+import { setPlaylist } from "@/redux/slices";
 import Link from "next/link";
 
 const PlaylistTable = (props: {

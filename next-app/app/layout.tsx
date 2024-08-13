@@ -1,15 +1,10 @@
-"use client";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Provider } from "react-redux";
-import store from "./redux/store";
-import { saveState } from "./redux/localStorage";
+import StateWrapper from "@/wrapper/stateWrapper";
+import { Suspense } from "react";
+import Loading from "@/app/loading";
 
 const inter = Inter({ subsets: ["latin"] });
-
-store.subscribe(() => {
-  saveState(store.getState().store);
-});
 
 export default function RootLayout({
   children,
@@ -17,12 +12,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <Provider store={store}>
-      <html lang="en">
-        <body className={inter.className + "dark text-white bg-black"}>
-          {children}
-        </body>
-      </html>
-    </Provider>
+    <Suspense fallback={<Loading />}>
+      <StateWrapper>
+        <html lang="en">
+          <body className={inter.className}>{children}</body>
+        </html>
+      </StateWrapper>
+    </Suspense>
   );
 }

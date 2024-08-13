@@ -1,4 +1,4 @@
-export const saveState = (state) => {
+export const saveState = (state: any) => {
   try {
     localStorage.setItem("appState", JSON.stringify(state));
     console.log("Saved State");

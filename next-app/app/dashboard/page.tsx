@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Navbar from "@/components/ui/navbar";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { setPlaylistTransfer } from "../redux/slices";
+import { setPlaylistTransfer } from "@/redux/slices";
 import {
   Card,
   CardContent,
@@ -21,7 +21,7 @@ const Dashboard = () => {
 
   const handleSpotifyLogin = (playlistTransfer: any) => {
     dispatch(setPlaylistTransfer(playlistTransfer));
-    window.location.href = `http://127.0.0.1:8000/spotify/login/?auth_token=${user.token}`;
+    window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URI}/spotify/login/?auth_token=${user.token}`;
   };
 
   useEffect(() => {
@@ -57,7 +57,9 @@ const Dashboard = () => {
             >
               <CardContent>
                 <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-center">
-                  Spotify <br/>to<br/> Youtube
+                  Spotify <br />
+                  to
+                  <br /> Youtube
                 </h3>
               </CardContent>
             </Card>
@@ -72,7 +74,9 @@ const Dashboard = () => {
             >
               <CardContent>
                 <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight text-center">
-                  Youtube <br/>to<br/> Spotify
+                  Youtube <br />
+                  to
+                  <br /> Spotify
                 </h3>
               </CardContent>
             </Card>

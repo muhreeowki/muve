@@ -40,7 +40,7 @@ const YoutubePlaylist = () => {
     console.log(checkedPlaylistItems);
     axios
       .post(
-        "http://127.0.0.1:8000/spotify/convert/",
+        `${process.env.NEXT_PUBLIC_BACKEND_URI}/spotify/convert/`,
         {
           yt_playlist: checkedPlaylistItems,
           new_playlist_name: playlist.snippet.title,
@@ -49,7 +49,7 @@ const YoutubePlaylist = () => {
           headers: {
             Authorization: `Token ${user.token}`,
           },
-        }
+        },
       )
       .then((response) => {
         console.log(response);
@@ -67,13 +67,13 @@ const YoutubePlaylist = () => {
     console.log("CONVERTING PLAYLIST....");
     axios
       .post(
-        "http://127.0.0.1:8000/youtube/get-playlist/",
+        `${process.env.NEXT_PUBLIC_BACKEND_URI}/youtube/get-playlist/`,
         { playlist: { ...playlist } },
         {
           headers: {
             Authorization: `Token ${user.token}`,
           },
-        }
+        },
       )
       .then((response) => {
         console.log(response);
@@ -107,7 +107,7 @@ const YoutubePlaylist = () => {
         .map((value: number, i: number) => {
           if (value === 1) return playlistItems[i];
         })
-        .filter((value: number) => value !== undefined)
+        .filter((value: number) => value !== undefined),
     );
     setChecked(newChecked);
     console.log(checkedPlaylistItems);
