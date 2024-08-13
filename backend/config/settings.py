@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+# Import dj-database-url at the beginning of the file.
+import dj_database_url
 from corsheaders.defaults import default_headers
 from pathlib import Path
 from dotenv import load_dotenv
@@ -33,7 +35,7 @@ SECRET_KEY = os.getenv(
 DEBUG = False
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "muve.onrender.com"]
-
+CSRF_TRUSTED_ORIGINS = ["https://muve.onrender.com"]
 
 # Application definition
 
@@ -94,14 +96,12 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
+# Replace the SQLite DATABASES configuration with PostgreSQL:
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    "default": dj_database_url.config(
+        default="postgresql://postgres:postgres@localhost:5432/mysite", conn_max_age=600
+    )
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
